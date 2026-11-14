@@ -1,0 +1,6 @@
+github: [humanjavaenterprises]
+custom: [
+  'https://getalby.com/p/vveerrgg',  # Lightning address
+  'https://blockchair.com/bitcoin/address/bc1qw6kasfudkd64sts2q5a0lpm8zgea9txjc4gxj7',  # Bitcoin address
+  'https://blockchair.com/litecoin/address/ltc1qhvt82z3308nr2gmpfuhldmu9cw3d943n7lf2we'  # Litecoin address
+]

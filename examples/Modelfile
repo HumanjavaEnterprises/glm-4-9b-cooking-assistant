@@ -1,0 +1,30 @@
+# Ollama Modelfile for GLM-4-9B Cooking Assistant v1.
+#   ollama create cooking -f Modelfile
+#   ollama run cooking
+# Point FROM at the GGUF you downloaded (or use hf.co/HumanjavaEnterprises/GLM-4-9B-Cooking-Assistant-GGUF:Q4_K_M).
+FROM ./glm-4-9b-cooking-assistant-v1-Q4_K_M.gguf
+
+# The system prompt the model was trained with. It works best with exactly this.
+SYSTEM """You are a cooking assistant. You answer questions about dishes, ingredients, techniques and food safety. When you are not sure, you say so."""
+
+# Context window. 8192 fits a long recipe plus the answer; lower it on a small card.
+PARAMETER num_ctx 8192
+PARAMETER temperature 0.7
+PARAMETER top_p 0.8
+PARAMETER top_k 20
+
+# GLM-4-0414 chat format: [gMASK]<sop>, then <|system|> / <|user|> / <|assistant|> turns; the model ends its turn with
+# <|user|>. Without this, Ollama falls back to a raw template: no chat formatting, no stop token, and the model rambles.
+TEMPLATE """[gMASK]<sop>
+{{- range .Messages }}
+{{- if eq .Role "system" }}<|system|>
+{{ .Content }}
+{{- else if eq .Role "user" }}<|user|>
+{{ .Content }}
+{{- else if eq .Role "assistant" }}<|assistant|>
+{{ .Content }}
+{{- end }}
+{{- end }}<|assistant|>"""
+PARAMETER stop "<|user|>"
+PARAMETER stop "<|observation|>"
+PARAMETER stop "<|endoftext|>"
